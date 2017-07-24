@@ -1,0 +1,69 @@
+- name: "Custom host file lines"
+  lineinfile: dest=/etc/hosts regexp='.*{{ item }}$' line="{{item}}" state=present
+  with_items: "{{ etc_host_lines }}"
+  when: etc_host_lines is defined
+  tags:
+    - etc_hosts
+
+- name: "Add host file"
+  lineinfile: dest=/etc/hosts regexp='.*{{ item }}$' line="{{item}}" state=present
+  with_items:
+    - "{{ lookup('dig', inventory_hostname, wantlist=True)[0] }}\t\t{{ inventory_hostname }}"
+  tags:
+    - etc_hosts
+  when: not inventory_hostname|ipaddr
+
+- name: "Remove lines from hosts file"
+  lineinfile: dest=/etc/hosts regexp='.*{{ item }}$' line="{{item}}" state=absent
+  with_items: "{{ etc_host_lines_removed }}"
+  when: etc_host_lines_removed is defined
+  tags:
+    - etc_hosts
+
+- name: set timezone to Etc/UTC
+  become: yes
+  timezone:
+    name: Etc/UTC
+  tags:
+    - timezone
+    - after-reboot
+
+- name: "Sets hostname"
+  become: yes
+  hostname:
+    name: "{{ hostname }}"
+  when: hostname is defined
+  tags:
+    - hostname
+    - after-reboot
+
+- name: "Sets /etc/hosts"
+  become: yes
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '^{{ ansible_default_ipv4.address }}\s'
+    line: '{{ ansible_default_ipv4.address }} {{ hostname }}.{{ internal_domain_name }} {{ hostname }}'
+  when: hostname is defined and internal_domain_name is defined
+  tags:
+    - hostname
+    - after-reboot
+
+- name: "RFC 2142 email aliases and forwarding"
+  become: yes
+  template:
+    src: etc_aliases.j2
+    dest: /etc/aliases
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  register: aliases
+  tags:
+    - postfix
+
+- name: "RFC 2142 email aliases and forwarding (update)"
+  become: yes
+  command: postalias /etc/aliases
+  when: aliases.changed
+  tags:
+    - postfix
