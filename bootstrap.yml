@@ -1,0 +1,34 @@
+- name: Users
+  hosts: all
+  sudo: yes
+  roles:
+    - users
+
+- name: Configure SSHD
+  hosts: all
+  sudo: yes
+  roles:
+    - ssh
+
+- name: Common Installs
+  hosts: all
+  sudo: yes
+  roles:
+    - common_installs
+
+- name: Common
+  hosts: all
+  sudo: yes
+  roles:
+    - common
+
+#- name: ufw (firewall)
+#  hosts: '!proxy:!cas_proxy:!enikshay_proxy:!couchdb2_proxy'
+#  sudo: yes
+#  roles:
+#    - {role: ufw, tags: ufw, when: ufw_private_interface is defined}
+
+- name: Configure swap
+  hosts: all
+  roles:
+    - {role: swap}
