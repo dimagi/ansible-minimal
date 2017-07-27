@@ -1,0 +1,3 @@
+[submodule "commcarehq-ansible"]
+	path = commcarehq-ansible
+	url = https://github.com/dimagi/commcarehq-ansible
