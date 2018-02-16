@@ -1,0 +1,10 @@
+- name: Ansible minimal
+  hosts: all
+  gather_facts: no
+  become: true
+  gather_facts: true
+  vars_files:
+    - ./commcare-cloud/ansible/group_vars/all.yml
+  roles:
+    - {role: ../commcare-cloud/ansible/roles/users, tags: users}
+    - {role: foo, tags: foo}
