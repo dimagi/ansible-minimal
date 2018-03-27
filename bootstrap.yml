@@ -1,6 +1,5 @@
 - name: Ansible minimal
   hosts: all
-  gather_facts: no
   become: true
   gather_facts: true
   vars_files:
