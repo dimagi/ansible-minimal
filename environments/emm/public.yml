@@ -34,11 +34,6 @@ dev_users:
 postgres_s3: True
 backup_postgres: dump
 aws_region: us-east-1
-secrets:
-  POSTGRES_USERS:
-    replication:
-      username: emm
-      password: secret  # needs to be changed locally to work
 localsettings:
   AMAZON_S3_ACCESS_KEY: test_access  # needs to be changed locally to work
   AMAZON_S3_SECRET_KEY: test_secret  # needs to be changed locally to work
