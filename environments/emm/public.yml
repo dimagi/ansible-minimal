@@ -1,0 +1,39 @@
+SITE_HOST: 'emm.dimagi.com'
+deploy_env: emm-gateway
+cchq_user: web
+authorized_keys_dir: ./commcare-cloud/environments/_authorized_keys/
+# users to allow login - still need to make this shared with commcare-cloud
+dev_users:
+  present:
+    - astone
+    - biyeun
+    - cellowitz
+    - ctsims
+    - czue
+    - dmiller
+    - droberts
+    - esoergel
+    - frener
+    - gbova
+    - gcapalbo
+    - jemord
+    - jroth
+    - jschweers
+    - jwilson
+    - mkangia
+    - npellegrino
+    - nhooper
+    - nsharma
+    - pvaidyanathan
+    - sgoyal
+    - skelly
+    - sravfeyn
+    - wpride
+  absent: []
+# pg backup variables
+postgres_s3: True
+backup_postgres: dump
+aws_region: us-east-1
+localsettings:
+  AMAZON_S3_ACCESS_KEY: test_access  # needs to be changed locally to work
+  AMAZON_S3_SECRET_KEY: test_secret  # needs to be changed locally to work
